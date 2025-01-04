@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace Task1
 {
     internal class Lists
     {
-        public static void Del(List<Buyers> buyers, int id)
+
+        public static void CheckId<T>(List<T> list, int id) where T : General {
+            foreach (var item in list) {
+            if (item.id==id) throw new ArgumentException("Объект с таким ID уже есть");
+            }
+        }
+
+        public static void Del(ref List<Buyers> buyers, int id)
         {
             try
             {
@@ -18,7 +26,7 @@ namespace Task1
             catch { Console.WriteLine("\nНевозможно удалить данный элемент\n"); };
         }
 
-        public static void Del(List<Items> items, int id)
+        public static void Del(ref List<Items> items, int id)
         {
             try
             {
@@ -28,7 +36,7 @@ namespace Task1
             catch { Console.WriteLine("\nНевозможно удалить данный элемент\n"); };
         }
 
-        public static void Del(List<Orders> orders, int id)
+        public static void Del(ref List<Orders> orders, int id)
         {
             try
             {
@@ -81,29 +89,31 @@ namespace Task1
             return tempStr;
         }
 
-        public static Buyers Enter(string temp)
+        public static Buyers Enter(string temp, List<Buyers> buyers)
         {
             string[] str = temp.Split(',');
             if (str.Length != 5) throw new ArgumentException("Неправильный набор данных");
             else
             {
+                CheckId(buyers, Convert.ToInt32(str[0]));
                 Buyers buyer = new Buyers(Convert.ToInt32(str[0]), str[1], str[2], str[3], str[4]);
                 return buyer;
             }
         }
 
-        public static Items Enter(string temp, bool have)
+        public static Items Enter(string temp, bool have, List<Items> items)
         {
             string[] str = temp.Split(',');
             if (str.Length != 4) throw new ArgumentException("Неправильный набор данных");
             else
             {
+                CheckId(items, Convert.ToInt32(str[0]));
                 Items item = new Items(Convert.ToInt32(str[0]), str[1], Convert.ToInt32(str[2]), str[3], have);
                 return item;
             }
         }
 
-        public static Orders Enter(string temp, DateTime date, List<Buyers> All_buyers, List<Items> All_items)
+        public static Orders Enter(string temp, DateTime date, List<Buyers> All_buyers, List<Items> All_items, List<Orders> orders)
         {
             string[] str = temp.Split(',');
             if (str.Length != 4) throw new ArgumentException("Неправильный набор данных");
@@ -116,6 +126,7 @@ namespace Task1
                     if (buyer == null) throw new ArgumentException("Покупатель не найден\n");
                     if (item == null) throw new ArgumentException("Продукт не найден\n");
                 }
+                CheckId(orders, Convert.ToInt32(str[0]));
                 Orders order = new Orders(Convert.ToInt32(str[0]), buyer, item, Convert.ToInt32(str[3]), Convert.ToDateTime(date));
                 return order;
             }
