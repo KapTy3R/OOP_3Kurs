@@ -33,14 +33,14 @@ namespace Task1
 
                 switch (Convert.ToInt32(temp))
             {
-                case 1: Console.WriteLine("\nВведите информацию по покупателю через запятую, в следующем формате: id, название, адрес, телефон, имя контактного лица:"); temp = Console.ReadLine(); try { var add = Lists.Enter(temp); All_buyers.Add(add); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
+                case 1: Console.WriteLine("\nВведите информацию по покупателю через запятую, в следующем формате: id, название, адрес, телефон, имя контактного лица:"); temp = Console.ReadLine(); try { var add = Lists.Enter(temp, All_buyers); All_buyers.Add(add); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
                 case 2: Console.WriteLine("\nВведите информацию по продукту через запятую, в следующем формате: id, название, стоимость, описание:"); temp = Console.ReadLine(); bool have = false;
                      R: Console.WriteLine("\nЭтот товар есть в наличии?(Y/N)");
                         keyInfo = Console.ReadKey();
                         if (keyInfo.Key == ConsoleKey.Y) have = true;
                         else if (keyInfo.Key == ConsoleKey.N) have = false;
                         else goto R;
-                        try {var add=Lists.Enter(temp, have);  All_items.Add(add); } catch(ArgumentException ex) {Console.WriteLine($"{ex.Message}"); }; break;
+                        try {var add=Lists.Enter(temp, have, All_items);  All_items.Add(add); } catch(ArgumentException ex) {Console.WriteLine($"{ex.Message}"); }; break;
                 case 3: Console.WriteLine("\nВведите информацию по заказу через запятую, в следующем формате: id сделки, id клиента, id товара, количество товара:"); temp = Console.ReadLine(); string dateFormat = "yyyy.MM.dd HH:mm:ss"; // Формат даты
                     DateTime parsedDate;
                     while (true)
@@ -51,15 +51,15 @@ namespace Task1
                         // Проверка ввода
                         if (!DateTime.TryParseExact(input, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
                             Console.WriteLine("\nНеверный формат. Попробуйте снова.\n");
-                        else { try { var add = Lists.Enter(temp, parsedDate, All_buyers, All_items); All_orders.Add(add); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break; }
+                        else { try { var add = Lists.Enter(temp, parsedDate, All_buyers, All_items, All_orders); All_orders.Add(add); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break; }
    
                     } break;
                     case 4: Console.WriteLine(Lists.Outs(All_buyers)); break;
                     case 5: Console.WriteLine(Lists.Outs(All_items)); break;
                     case 6: Console.WriteLine(Lists.Outs(All_orders)); break;
-                    case 7: Console.WriteLine("\nВведите id покупателя, который нужно удалить:"); temp=Console.ReadLine(); try { int tempint = Convert.ToInt32(temp); Lists.Del(All_buyers, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
-                    case 8: Console.WriteLine("\nВведите id продукта, который нужно удалить:"); temp = Console.ReadLine(); try { int tempint = Convert.ToInt32(temp); Lists.Del(All_items, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
-                    case 9: Console.WriteLine("\nВведите id заказа, который нужно удалить:"); temp = Console.ReadLine(); temp = Console.ReadLine(); try { int tempint = Convert.ToInt32(temp); Lists.Del(All_orders, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
+                    case 7: Console.WriteLine("\nВведите id покупателя, который нужно удалить:"); temp=Console.ReadLine(); try { int tempint = Convert.ToInt32(temp); Lists.Del(ref All_buyers, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
+                    case 8: Console.WriteLine("\nВведите id продукта, который нужно удалить:"); temp = Console.ReadLine(); try { int tempint = Convert.ToInt32(temp); Lists.Del(ref All_items, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
+                    case 9: Console.WriteLine("\nВведите id заказа, который нужно удалить:"); temp = Console.ReadLine(); temp = Console.ReadLine(); try { int tempint = Convert.ToInt32(temp); Lists.Del(ref All_orders, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
                     default: Environment.Exit(0); break;
             }; 
         } while (true);
