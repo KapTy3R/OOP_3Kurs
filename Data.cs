@@ -16,9 +16,9 @@ namespace Task1
         {
             Console.WriteLine("\nВведите полный путь к файлу:");
             this.filePath = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(this.filePath))
+                throw new ArgumentException("Путь к файлу не может быть пустым.");
         }
-
-
 
         public abstract void Read(ref List<Buyers> buyers, ref List<Items> items, ref List<Orders> orders);
         public abstract void Write(List<Buyers> buyers, List<Items> items, List<Orders> orders);

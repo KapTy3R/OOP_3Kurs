@@ -30,7 +30,7 @@ namespace Task1
             {
                 case "D1": Console.WriteLine("\nВведите информацию по покупателю через запятую, в следующем формате: id, название, адрес, телефон, имя контактного лица:"); temp = Console.ReadLine(); try { var add = Lists.Enter(temp, All_buyers); All_buyers.Add(add); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
                 case "D2": Console.WriteLine("\nВведите информацию по продукту через запятую, в следующем формате: id, название, стоимость, описание:"); temp = Console.ReadLine(); bool have = false;
-                     R: Console.WriteLine("\nЭтот товар есть в наличии?(Y/N)");
+R:                      Console.WriteLine("\nЭтот товар есть в наличии?(Y/N)");
                         keyInfo = Console.ReadKey();
                         if (keyInfo.Key == ConsoleKey.Y) have = true;
                         else if (keyInfo.Key == ConsoleKey.N) have = false;
@@ -55,8 +55,28 @@ namespace Task1
                     case "D7": Console.WriteLine("\nВведите id покупателя, который нужно удалить:"); temp=Console.ReadLine(); try { int tempint = Convert.ToInt32(temp); Lists.Del(ref All_buyers, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
                     case "D8": Console.WriteLine("\nВведите id продукта, который нужно удалить:"); temp = Console.ReadLine(); try { int tempint = Convert.ToInt32(temp); Lists.Del(ref All_items, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
                     case "D9": Console.WriteLine("\nВведите id заказа, который нужно удалить:"); temp = Console.ReadLine(); temp = Console.ReadLine(); try { int tempint = Convert.ToInt32(temp); Lists.Del(ref All_orders, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
-                    case "D0": try { XmlData xmlData = new XmlData(); xmlData.Read(ref All_buyers, ref All_items, ref All_orders);} catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}");}; break;
-                    case "OemMinus": try { XmlData xmlData = new XmlData(); xmlData.Write(All_buyers, All_items, All_orders); } catch(ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
+                    case "D0":
+L1:                     Console.WriteLine("\nВ какой тип файлов загрузить данные?\n1 - SQL; 2 - XML; 3 - JSON; + - Отмена");
+                        keyInfo = Console.ReadKey();
+                        switch (keyInfo.Key)
+                        {
+                            case ConsoleKey.D1: try { SqlData sqlData = new SqlData(); sqlData.Read(ref All_buyers, ref All_items, ref All_orders); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
+                            case ConsoleKey.D2: try { XmlData xmlData = new XmlData(); xmlData.Read(ref All_buyers, ref All_items, ref All_orders); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
+                            case ConsoleKey.D3: try { JsonData JsonData = new JsonData(); JsonData.Read(ref All_buyers, ref All_items, ref All_orders); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
+                            case ConsoleKey.OemPlus: break;
+                            default: goto L1;
+                        }
+                        break;
+                    case "OemMinus":
+L2:                     Console.WriteLine("\nВ какой тип файлов загрузить данные?\n1 - SQL; 2 - XML; 3 - JSON; + - Отмена");
+                        keyInfo = Console.ReadKey();
+                        switch (keyInfo.Key) {
+                            case ConsoleKey.D1: try { SqlData sqlData = new SqlData(); sqlData.Write(All_buyers, All_items, All_orders); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
+                            case ConsoleKey.D2: try { XmlData xmlData = new XmlData(); xmlData.Write(All_buyers, All_items, All_orders); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
+                            case ConsoleKey.D3: try { JsonData JsonData = new JsonData(); JsonData.Write(All_buyers, All_items, All_orders); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
+                            case ConsoleKey.OemPlus: break;
+                            default: goto L2;
+                        } break;
                     case "OemPlus": Environment.Exit(0); break;
                     default: Console.WriteLine($"\nНеправильный выбор\n"); break;
             }; 
