@@ -25,30 +25,41 @@ namespace Task1
             XDocument xmlDoc = XDocument.Load(filePath);
 
             // Чтение покупателей
-            buyers = xmlDoc.Descendants("buyer").Select(b => new Buyers(
-                (int)b.Attribute("id"),
-                (string)b.Attribute("name"),
-                (string)b.Attribute("address"),
-                (string)b.Attribute("tel"),
-                (string)b.Attribute("person")
-            )).ToList();
+            buyers = new List<Buyers>();
+
+            str = xmlDoc.Descendants("buyers").Select(b => new string($"{(int)b.Attribute("id")},{(string)b.Attribute("name")}, {(string)b.Attribute("address")}, {(string)b.Attribute("tel")}, {(string)b.Attribute("person")}")).ToList();
+            foreach (var s in str)
+            {
+                buyers.Add(Lists.Enter(s, buyers));
+            }
+            buy = new List<Buyers>(buyers);
+            buyers.Clear();
+            str.Clear();
+
 
             // Чтение товаров
-            items = xmlDoc.Descendants("item").Select(i => new Items(
-                (int)i.Attribute("id"),
-                (string)i.Attribute("name"),
-                (int)i.Attribute("value"),
-                (string)i.Attribute("description"),
-                (bool)i.Attribute("have")
-            )).ToList();
+            items = new List<Items>();
+            str = xmlDoc.Descendants("items").Select(b => new string($"{(int)b.Attribute("id")}, {(string)b.Attribute("name")}, {(int)b.Attribute("value")}, {(string)b.Attribute("description")}, {(bool)b.Attribute("have")}")).ToList();
+            foreach (var s in str)
+            {
+                string[] temp = s.Split(',');
+                items.Add(Lists.Enter(s.Remove(s.Length - (temp[temp.Length - 1].Length + 1)), Convert.ToBoolean(temp[temp.Length - 1]), items));
+            }
+            it = new List<Items>(items);
+            items.Clear();
+            str.Clear();
 
             // Чтение заказов
-            orders = xmlDoc.Descendants("order").Select(o => new Orders(
-                (int)o.Attribute("id"),
-                (Buyers)o.Attribute("buyer_id"),
-                (Items)o.Attribute("item_id"),
-                DateTime.Parse((string)o.Attribute("date"))
-            )).ToList();
+            items = new List<Items>();
+            str = xmlDoc.Descendants("items").Select(b => new string($"{(int)b.Attribute("id")}, {(string)b.Attribute("name")}, {(int)b.Attribute("value")}, {(string)b.Attribute("description")}, {(bool)b.Attribute("have")}")).ToList();
+            foreach (var s in str)
+            {
+                string[] temp = s.Split(',');
+                items.Add(Lists.Enter(s.Remove(s.Length - (temp[temp.Length - 1].Length + 1)), Convert.ToBoolean(temp[temp.Length - 1]), items));
+            }
+            it = new List<Items>(items);
+            items.Clear();
+            str.Clear();
 
             Console.WriteLine("Данные успешно прочитаны из XML-файла.");
         }
