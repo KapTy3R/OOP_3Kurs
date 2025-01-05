@@ -9,6 +9,7 @@ namespace Task1
     internal class XmlData : Data
     {
         private string filePath;
+        string str;
 
         public XmlData(string filePath)
         {
@@ -50,15 +51,16 @@ namespace Task1
             str.Clear();
 
             // Чтение заказов
-            items = new List<Items>();
-            str = xmlDoc.Descendants("items").Select(b => new string($"{(int)b.Attribute("id")}, {(string)b.Attribute("name")}, {(int)b.Attribute("value")}, {(string)b.Attribute("description")}, {(bool)b.Attribute("have")}")).ToList();
+            orders = new List<Orders>();
+
+            str = xmlDoc.Descendants("orders").Select(b => new string($"{(int)b.Attribute("id")},{(string)b.Attribute("buyer_id")},{(string)b.Attribute("item_id")}, {(string)b.Attribute("quantity")}, {(string)b.Attribute("date")}")).ToList();
             foreach (var s in str)
             {
                 string[] temp = s.Split(',');
-                items.Add(Lists.Enter(s.Remove(s.Length - (temp[temp.Length - 1].Length + 1)), Convert.ToBoolean(temp[temp.Length - 1]), items));
+                orders.Add(Lists.Enter(s.Remove(s.Length - (temp[temp.Length - 1].Length + 1)), DateTime.Parse(temp[temp.Length - 1]), buy, it, orders));
             }
-            it = new List<Items>(items);
-            items.Clear();
+            or = new List<Orders>(orders);
+            orders.Clear();
             str.Clear();
 
             Console.WriteLine("Данные успешно прочитаны из XML-файла.");
