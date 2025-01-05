@@ -43,7 +43,12 @@ namespace Task1
             buyers.Clear();
 
             items = new List<Items>();
-            items = xmlDoc.Descendants("items").Select(b => new Items((int)b.Attribute("id"), (string)b.Attribute("name"), (int)b.Attribute("value"), (string)b.Attribute("description"), (bool)b.Attribute("have"))).ToList();
+            str = xmlDoc.Descendants("items").Select(b => new string($"{(int)b.Attribute("id")}, {(string)b.Attribute("name")}, {(int)b.Attribute("value")}, {(string)b.Attribute("description")}, {(bool)b.Attribute("have")}")).ToList();
+            foreach (var s in str)
+            {
+                string[] temp = s.Split(',');
+                items.Add(Lists.Enter(s.Remove(s.Length - (temp[temp.Length-1].Length+1)),Convert.ToBoolean(temp[temp.Length-1]), items));
+            }
             it = new List<Items>(items);
             items.Clear();
             str.Clear();
