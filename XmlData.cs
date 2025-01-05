@@ -8,14 +8,14 @@ namespace Task1
 {
     internal class XmlData : Data
     {
-        private string filePath;
         List<string> str;
         XDocument xmlDoc = new XDocument();
         static List<Buyers> buy = new List<Buyers>();
         static List<Orders> or = new List<Orders>();
         static List<Items> it = new List<Items>();
+        private string filePath;
 
-        public XmlData(string filePath)
+        public XmlData(string filePath) :base()
         {
             if (string.IsNullOrWhiteSpace(filePath))
                 throw new ArgumentException("Укажите путь к файлу.");
