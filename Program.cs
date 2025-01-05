@@ -23,7 +23,7 @@ namespace Task1
 
             do
             {
-                Console.WriteLine("\nЧто хотите сделать?\n1. Ввести покупателя\n2. Ввести продукт\n3. Ввести заказ\n4. Показать всех покупателей\n5. Показать все продукты\n6. Показать все заказы\n7. Удалить покупателя\n8. Удалить продукт\n9. Удалить заказ\n0. Загрузить данные из файла\n-. Выход");
+                Console.WriteLine("\nЧто хотите сделать?\n1. Ввести покупателя\n2. Ввести продукт\n3. Ввести заказ\n4. Показать всех покупателей\n5. Показать все продукты\n6. Показать все заказы\n7. Удалить покупателя\n8. Удалить продукт\n9. Удалить заказ\n0. Загрузить данные из файла\n-.Сохранить всё в отдельный файл\n+. Выход");
                 ConsoleKeyInfo keyInfo=Console.ReadKey();
                 temp = $"{keyInfo.Key}";
                 switch (temp)
@@ -55,8 +55,9 @@ namespace Task1
                     case "D7": Console.WriteLine("\nВведите id покупателя, который нужно удалить:"); temp=Console.ReadLine(); try { int tempint = Convert.ToInt32(temp); Lists.Del(ref All_buyers, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
                     case "D8": Console.WriteLine("\nВведите id продукта, который нужно удалить:"); temp = Console.ReadLine(); try { int tempint = Convert.ToInt32(temp); Lists.Del(ref All_items, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
                     case "D9": Console.WriteLine("\nВведите id заказа, который нужно удалить:"); temp = Console.ReadLine(); temp = Console.ReadLine(); try { int tempint = Convert.ToInt32(temp); Lists.Del(ref All_orders, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
-                    case "OemMinus": Environment.Exit(0); break;
-                    case "D0": try {ReadFromXML fromXML = new(ref All_orders, ref All_buyers, ref All_items); ReadFromXML.Read(ref All_orders, ref All_buyers, ref All_items);} catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}");}; break;
+                    case "D0": try { XmlData xmlData = new XmlData(); xmlData.Read(ref All_buyers, ref All_items, ref All_orders);} catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}");}; break;
+                    case "OemMinus": try { XmlData xmlData = new XmlData(); xmlData.Write(All_buyers, All_items, All_orders); } catch(ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
+                    case "OemPlus": Environment.Exit(0); break;
                     default: Console.WriteLine($"\nНеправильный выбор\n"); break;
             }; 
         } while (true);

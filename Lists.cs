@@ -46,6 +46,14 @@ namespace Task1
             catch { Console.WriteLine("\nНевозможно удалить данный элемент\n"); };
         }
 
+        public static string RemoveLeadingSpace(string input)
+        {
+            if (!string.IsNullOrEmpty(input) && input[0] == ' ')
+            {
+                return input.Substring(1);
+            }
+            return input;
+        }
 
         public static string Outs(List<Buyers> buyers)
         {
@@ -95,6 +103,8 @@ namespace Task1
             if (str.Length != 5) throw new ArgumentException("Неправильный набор данных");
             else
             {
+                for (int i = 0; i < str.Length; i++)
+                    str[i] = RemoveLeadingSpace(str[i]);
                 CheckId(buyers, Convert.ToInt32(str[0]));
                 Buyers buyer = new Buyers(Convert.ToInt32(str[0]), str[1], str[2], str[3], str[4]);
                 return buyer;
@@ -107,6 +117,8 @@ namespace Task1
             if (str.Length != 4) throw new ArgumentException("Неправильный набор данных");
             else
             {
+                for (int i = 0; i < str.Length; i++)
+                    str[i] = RemoveLeadingSpace(str[i]);
                 CheckId(items, Convert.ToInt32(str[0]));
                 Items item = new Items(Convert.ToInt32(str[0]), str[1], Convert.ToInt32(str[2]), str[3], have);
                 return item;
@@ -119,6 +131,8 @@ namespace Task1
             if (str.Length != 4) throw new ArgumentException("Неправильный набор данных");
             else
             {
+                for (int i = 0; i < str.Length; i++)
+                    str[i] = RemoveLeadingSpace(str[i]);
                 Buyers buyer = FindHeap.FindElementUsingHeap(All_buyers, Convert.ToInt32(str[1]));
                 Items item = FindHeap.FindElementUsingHeap(All_items, Convert.ToInt32(str[2]));
                 if (buyer == null || item == null)
