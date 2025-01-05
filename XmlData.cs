@@ -9,7 +9,7 @@ namespace Task1
     internal class XmlData : Data
     {
         private string filePath;
-        string str;
+        List<string> str;
 
         public XmlData(string filePath)
         {
