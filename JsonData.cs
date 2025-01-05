@@ -38,7 +38,7 @@ namespace Task1
             List<Items> it = new List<Items>();
             foreach (var itemData in jsonData.items)
             {
-                it.Add(Lists.Enter($"{itemData.id},{itemData.name},{itemData.value},{itemData.description}", itemData.have, it));
+                it.Add(Lists.Enter($"{itemData.id},{itemData.name},{itemData.value},{itemData.description}", Convert.ToBoolean(itemData.check), it));
             }
             items.Clear();
             items = new List<Items>(it);
@@ -48,7 +48,7 @@ namespace Task1
             List<Orders> or = new List<Orders>();
             foreach (var orderData in jsonData.orders)
             {
-                or.Add(Lists.Enter($"{orderData.id},{orderData.buyer_id},{orderData.item_id},{orderData.quantity}", orderData.date, buyers, items, or));
+                or.Add(Lists.Enter($"{orderData.id},{Convert.ToInt32(orderData.buyer_id)},{Convert.ToInt32(orderData.item_id)},{Convert.ToInt32(orderData.quantity)}", Convert.ToDateTime(orderData.date), buyers, items, or));
             }
             orders.Clear();
             orders = new List<Orders>(or);
@@ -67,7 +67,14 @@ namespace Task1
             {
                 buyers = buyers,
                 items = items,
-                orders = orders
+                orders = orders.Select(o => new
+                {
+                    o.id,
+                    buyer_id = o.buyer.id,
+                    item_id = o.item.id,
+                    o.item_quantity,
+                    date = o.date.ToString("yyyy.MM.dd HH:mm:ss")
+                })
             };
 
             try
