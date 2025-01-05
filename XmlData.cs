@@ -10,6 +10,10 @@ namespace Task1
     {
         private string filePath;
         List<string> str;
+        XDocument xmlDoc = new XDocument();
+        static List<Buyers> buy = new List<Buyers>();
+        static List<Orders> or = new List<Orders>();
+        static List<Items> it = new List<Items>();
 
         public XmlData(string filePath)
         {
