@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Task4
 {
     /// <summary>
-    /// Логика взаимодействия для MainPage.xaml
+    /// Логика взаимодействия для OrdersPage.xaml
     /// </summary>
-    public partial class MainPage : Page
+    public partial class OrdersPage : Page
     {
-        public MainPage()
+        public OrdersPage()
         {
             InitializeComponent();
         }

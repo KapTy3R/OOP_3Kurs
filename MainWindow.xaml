@@ -6,10 +6,37 @@
         xmlns:local="clr-namespace:Task4"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <TabControl>
-            <TabItem Header="Заказы" Name="OrdersButton"></TabItem>
-            <TabItem Header="Покупатели" Name="BuyersButton"></TabItem>
-        <TabItem Header="Продукты" Name="ItemsButton"></TabItem>
+    <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="TabControl_SelectionChanged" Name="TabControl">
+        <TabItem Header="Заказы" Name="OrdersButton">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1.3*"/>
+                </Grid.RowDefinitions>
+                <Frame NavigationUIVisibility="Hidden" Name="OrdersFrame" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0"/>
+                <Frame NavigationUIVisibility="Hidden" Name="OrdersInfo" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Покупатели" Name="BuyersButton">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1.3*"/>
+                </Grid.RowDefinitions>
+                <Frame NavigationUIVisibility="Hidden" Name="BuyersFrame" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0"/>
+                <Frame NavigationUIVisibility="Hidden" Name="BuyersInfo" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Продукты" Name="ItemsButton">
+            <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="1.3*"/>
+            </Grid.RowDefinitions>
+                <Frame NavigationUIVisibility="Hidden" Name="ItemsFrame" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0"/>
+                <Frame NavigationUIVisibility="Hidden" Name="ItemsInfo" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1"/>
+            </Grid>
+        </TabItem>
     </TabControl>
 
 </Window>

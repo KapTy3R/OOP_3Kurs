@@ -24,5 +24,14 @@ namespace Task4
         {
             InitializeComponent();
         }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch (TabControl.SelectedIndex) {
+            case 1: OrdersFrame.Content = new OrdersPage(); break;
+            case 2: BuyersFrame.Content = new BuyersPage(); break;
+            case 3: ItemsFrame.Content = new ItemsPage(); break;
+            }
+        }
     }
 }

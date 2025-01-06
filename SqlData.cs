@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using SQLitePCL;
+using System.IO;
 
 namespace Task1
 {

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Task4
 {
     /// <summary>
-    /// Логика взаимодействия для StrokeBuyer.xaml
+    /// Логика взаимодействия для BuyersPage.xaml
     /// </summary>
-    public partial class StrokeBuyer : UserControl
+    public partial class BuyersPage : Page
     {
-        public StrokeBuyer()
+        public BuyersPage()
         {
             InitializeComponent();
         }
