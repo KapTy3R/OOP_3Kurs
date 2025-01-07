@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Task4_2
 {
@@ -67,6 +68,7 @@ namespace Task4_2
         }
         public static Orders FindElementUsingHeap(List<Orders> array, int target)
         {
+            MessageBox.Show("OR");
             if (array == null || array.Count == 0)
             {
                 throw new ArgumentException("Массив не может быть пустым.");

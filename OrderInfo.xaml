@@ -15,6 +15,7 @@
         <StackPanel Orientation="Vertical">
             <Label Content="Товары" Padding="5"/>
             <ListView Name="items" MinWidth="100" MinHeight="50" HorizontalAlignment="Stretch"/>
+
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Content="Общая стоимость" Padding="5"/>

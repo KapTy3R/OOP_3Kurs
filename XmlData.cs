@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.IO;
+using System.Windows;
 
 namespace Task4_2
 {
@@ -33,43 +34,82 @@ namespace Task4_2
             // Чтение покупателей
             List<Buyers> buy = new List<Buyers>();
 
-            str = xmlDoc.Descendants("buyers").Select(b => new string($"{(int)b.Attribute("id")},{(string)b.Attribute("name")}, {(string)b.Attribute("address")}, {(string)b.Attribute("tel")}, {(string)b.Attribute("person")}")).ToList();
-            foreach (var s in str)
+            var buyersElements = xmlDoc.Element("root")?.Elements("buyers").Select(b => new
             {
-                buy.Add(Lists.Enter(s, buy));
+                Id = b.Attribute("id") != null ? (int)b.Attribute("id") : 0,
+                Name = b.Attribute("name") != null ? (string)b.Attribute("name") : string.Empty,
+                Address = b.Attribute("address") != null ? (string)b.Attribute("address") : string.Empty,
+                Tel = b.Attribute("tel") != null ? (string)b.Attribute("tel") : string.Empty,
+                Person = b.Attribute("person") != null ? (string)b.Attribute("person") : string.Empty
+            }).ToList();
+
+            foreach (var buyer in buyersElements)
+            {
+                buy.Add(Lists.Enter($"{buyer.Id},{buyer.Name},{buyer.Address},{buyer.Tel},{buyer.Person}", buy));
             }
             buyers.Clear();
             buyers = new List<Buyers>(buy);
             buy.Clear();
-            str.Clear();
-
 
             // Чтение товаров
             List<Items> it = new List<Items>();
-            str = xmlDoc.Descendants("items").Select(b => new string($"{(int)b.Attribute("id")}, {(string)b.Attribute("name")}, {(int)b.Attribute("value")}, {(string)b.Attribute("description")}, {(bool)b.Attribute("have")}")).ToList();
-            foreach (var s in str)
+            var itemsElements = xmlDoc.Element("root")?.Elements("items").Select(b => new
             {
-                string[] temp = s.Split(',');
-                it.Add(Lists.Enter(s.Remove(s.Length - (temp[temp.Length - 1].Length + 1)), Convert.ToBoolean(temp[temp.Length - 1]), it));
+                Id = b.Attribute("id") != null ? (int)b.Attribute("id") : 0,
+                Name = b.Attribute("name") != null ? (string)b.Attribute("name") : string.Empty,
+                Value = b.Attribute("value") != null ? (int)b.Attribute("value") : 0,
+                Description = b.Attribute("description") != null ? (string)b.Attribute("description") : string.Empty,
+                Have = b.Attribute("have") != null ? (bool)b.Attribute("have") : false
+            }).ToList();
+
+            foreach (var item in itemsElements)
+            {
+                it.Add(Lists.Enter($"{item.Id},{item.Name},{item.Value},{item.Description}", item.Have, it));
             }
             items.Clear();
             items = new List<Items>(it);
             it.Clear();
-            str.Clear();
 
             // Чтение заказов
             List<Orders> or = new List<Orders>();
-
-            str = xmlDoc.Descendants("orders").Select(b => new string($"{(int)b.Attribute("id")},{(string)b.Attribute("buyer_id")},{(string)b.Attribute("item_id")}, {(string)b.Attribute("quantity")}, {(string)b.Attribute("date")}")).ToList();
-            foreach (var s in str)
+            //var itemsElementsOr = xmlDoc.Element("root")?.Element("orders")?.Elements("items");
+            var ordersElements = xmlDoc.Element("root")?.Elements("orders").Select(b => new
             {
-                string[] temp = s.Split(',');
-                or.Add(Lists.Enter(s.Remove(s.Length - (temp[temp.Length - 1].Length + 1)), DateTime.Parse(temp[temp.Length - 1]), buyers, items, or));
+                Id = b.Attribute("id") != null ? (int)b.Attribute("id") : throw new ArgumentException("В одном из заказов отсутствует ID"),
+                Buyer_id = b.Attribute("buyer_id") != null ? (int)b.Attribute("buyer_id") : throw new ArgumentException("В одном из заказов отсутствует ID клиента"),
+                Date = b.Attribute("date") != null ? (DateTime)b.Attribute("date"): throw new ArgumentException("В одном из заказов отсутствует время"),
+                items = b?.Elements("items")?.Elements("item").Select(j => new {
+                    Item_id = j.Attribute("id") != null ? (string)j.Attribute("id") : throw new ArgumentException("В одном из продуктов отсутствует ID"),
+                    Quantity = j.Attribute("quantity") != null ? (string)j.Attribute("quantity") : throw new ArgumentException("В одном из продуктов отсутствует количество"),
+                }).ToList()
+            }).ToList();
+
+
+            //var itemsElements = xmlDoc.Element("root")?.Element("orders")?.Elements("items");
+
+            foreach (var orderElement in ordersElements)
+            {
+
+                // Сборка строки с информацией о заказе
+                string orderInfo = $"{orderElement.Id},{orderElement.Buyer_id}"; // Строка для "id заказа, id покупателя"
+
+                // Сборка строки с информацией о продуктах
+                /*
+                .Select(item => $"{(item.Attribute("item_id") != null ? (int)item.Attribute("item_id") : 0)} - {(item.Attribute("quantity") != null ? (int)item.Attribute("quantity") : 0)}")
+                .ToList();*/
+                string productInfo = "";
+                foreach (var t in orderElement.items) {
+                    productInfo += $"{t.Item_id} - {t.Quantity}, "; // Строка для "id продукта1 - количество1, id продукта2 - количество2"   
+                }
+                productInfo=productInfo.Substring(0, productInfo.Length - 2);
+
+                // Добавление заказа в список
+                or.Add(Lists.Enter(orderInfo, productInfo, orderElement.Date, buyers, items, or));
             }
+
             orders.Clear();
             orders = new List<Orders>(or);
             or.Clear();
-            str.Clear();
 
             Console.WriteLine("Данные успешно прочитаны из XML-файла.");
         }
@@ -100,9 +140,13 @@ namespace Task4_2
                         orders.Select(o => new XElement("orders",
                             new XAttribute("id", o.id),
                             new XAttribute("buyer_id", o.buyer.id),
-                            new XAttribute("item_id", o.item.id),
-                            new XAttribute("quantity", o.item_quantity),
-                            new XAttribute("date", o.date.ToString("yyyy.MM.dd HH:mm:ss"))
+                            new XAttribute("date", o.date.ToString("yyyy.MM.dd HH:mm:ss")),
+                            new XElement("items",
+                            o.items.Select(oi => new XElement("item",
+                                    new XAttribute("id", oi.Item.id),
+                                    new XAttribute("quantity", oi.Quantity))
+                            )
+                        )
                         )
                     )
                 )

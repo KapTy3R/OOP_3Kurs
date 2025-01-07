@@ -12,8 +12,7 @@
             <GridView>
                 <GridViewColumn Width="50" Header="ID" DisplayMemberBinding="{Binding id}"/>
                 <GridViewColumn Width="150" Header="ID покупателя" DisplayMemberBinding="{Binding buyer}"/>
-                <GridViewColumn Width="100" Header="ID товара" DisplayMemberBinding="{Binding item}"/>
-                <GridViewColumn Width="100" Header="Количество" DisplayMemberBinding="{Binding item_quantity}"/>
+                <GridViewColumn Width="150" Header="Количество товаров" DisplayMemberBinding="{Binding items_quantity}"/>
                 <GridViewColumn Width="150" Header="Общая стоимость" DisplayMemberBinding="{Binding total_value}"/>
                 <GridViewColumn Width="150" Header="Дата заказа" DisplayMemberBinding="{Binding date, StringFormat={}{0:hh:mm:ss dd.MM.yyyy}}"/>
             </GridView>

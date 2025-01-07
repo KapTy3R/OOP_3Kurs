@@ -28,6 +28,7 @@ namespace Task4_2
         public OrderInfo(Orders orders) : this() {
             buyer.Text = $"{orders.buyer}";
             total_value.Text = $"{orders.total_value}";
+            items.ItemsSource = orders.items;
             date.Text = $"{orders.date}";
         }
     }

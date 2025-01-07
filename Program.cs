@@ -37,7 +37,7 @@ R:                      Console.WriteLine("\nЭтот товар есть в н�
                         else if (keyInfo.Key == ConsoleKey.N) have = false;
                         else goto R;
                         try {var add=Lists.Enter(temp, have, All_items);  All_items.Add(add); } catch(ArgumentException ex) {Console.WriteLine($"{ex.Message}"); }; break;
-                case "D3": Console.WriteLine("\nВведите информацию по заказу через запятую, в следующем формате: id сделки, id клиента, id товара, количество товара:"); temp = Console.ReadLine(); string dateFormat = "yyyy.MM.dd HH:mm:ss"; // Формат даты
+                case "D3": Console.WriteLine("\nВведите информацию по заказу через запятую, в следующем формате: id сделки, id клиента"); temp = Console.ReadLine(); string dateFormat = "yyyy.MM.dd HH:mm:ss"; // Формат даты
                     DateTime parsedDate;
                     while (true)
                     {
@@ -47,9 +47,16 @@ R:                      Console.WriteLine("\nЭтот товар есть в н�
                         // Проверка ввода
                         if (!DateTime.TryParseExact(input, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
                             Console.WriteLine("\nНеверный формат. Попробуйте снова.\n");
-                        else { try { var add = Lists.Enter(temp, parsedDate, All_buyers, All_items, All_orders); All_orders.Add(add); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break; }
-   
-                    } break;
+                        else { break};
+                     }
+                    while(true){
+                        Console.WriteLine($"\nВведите продукты через запятую, в следующем формате: id продукта - количество);
+                        string products = Console.ReadLine();
+                        if (input.split(',').split("- ") == null){
+                        Console.WriteLine("\nНеверный формат. Попробуйте снова.\n");}
+                        else try { var add = Lists.Enter(temp, products, parsedDate, All_buyers, All_items, All_orders); All_orders.Add(add); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break; }
+                    }
+                     break;
                     case "D4": Console.WriteLine(Lists.Outs(All_buyers)); break;
                     case "D5": Console.WriteLine(Lists.Outs(All_items)); break;
                     case "D6": Console.WriteLine(Lists.Outs(All_orders)); break;

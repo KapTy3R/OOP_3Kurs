@@ -29,7 +29,7 @@ namespace Task4_2
             List<Buyers> buy = new List<Buyers>();
             foreach (var buyerData in jsonData.buyers)
             {
-                buy.Add(Lists.Enter($"{buyerData.id},{buyerData.name},{buyerData.address},{buyerData.tel}, {buyerData.person}", buy));
+                buy.Add(Lists.Enter($"{buyerData.id},{buyerData.name},{buyerData.address},{buyerData.tel},{buyerData.person}", buy));
             }
             buyers.Clear();
             buyers = new List<Buyers>(buy);
@@ -39,7 +39,7 @@ namespace Task4_2
             List<Items> it = new List<Items>();
             foreach (var itemData in jsonData.items)
             {
-                it.Add(Lists.Enter($"{itemData.id},{itemData.name},{itemData.value},{itemData.description}", Convert.ToBoolean(itemData.check), it));
+                it.Add(Lists.Enter($"{itemData.id},{itemData.name},{itemData.value},{itemData.description}", Convert.ToBoolean(itemData.have), it));
             }
             items.Clear();
             items = new List<Items>(it);
@@ -49,7 +49,20 @@ namespace Task4_2
             List<Orders> or = new List<Orders>();
             foreach (var orderData in jsonData.orders)
             {
-                or.Add(Lists.Enter($"{orderData.id},{Convert.ToInt32(orderData.buyer_id)},{Convert.ToInt32(orderData.item_id)},{Convert.ToInt32(orderData.quantity)}", Convert.ToDateTime(orderData.date), buyers, items, or));
+                // Парсинг строки товаров для заказа
+                var orderItems = ((IEnumerable<dynamic>)orderData.items).Select(itemData => new {
+                    Item_id = (int)itemData.item_id,
+                    Quantity = (int)itemData.quantity
+                }).ToList();
+
+                // Сборка строки с информацией о заказе
+                string orderInfo = $"{orderData.id},{orderData.buyer_id}"; // Строка для "id заказа, id покупателя"
+
+                // Сборка строки с информацией о продуктах
+                string productInfo = string.Join(", ", orderItems.Select(item => $"{item.Item_id} - {item.Quantity}"));
+
+                // Добавление заказа в список
+                or.Add(Lists.Enter(orderInfo, productInfo, Convert.ToDateTime(orderData.date), buyers, items, or));
             }
             orders.Clear();
             orders = new List<Orders>(or);
@@ -66,15 +79,32 @@ namespace Task4_2
 
             var jsonData = new
             {
-                buyers = buyers,
-                items = items,
+                buyers = buyers.Select(b => new
+                {
+                    b.id,
+                    b.name,
+                    b.address,
+                    b.tel,
+                    b.person
+                }),
+                items = items.Select(i => new
+                {
+                    i.id,
+                    i.name,
+                    i.value,
+                    i.description,
+                    i.check
+                }),
                 orders = orders.Select(o => new
                 {
                     o.id,
                     buyer_id = o.buyer.id,
-                    item_id = o.item.id,
-                    o.item_quantity,
-                    date = o.date.ToString("yyyy.MM.dd HH:mm:ss")
+                    date = o.date.ToString("yyyy.MM.dd HH:mm:ss"),
+                    items = o.items.Select(ai => new
+                    {
+                        item_id = ai.Item.id,
+                        quantity = ai.Quantity
+                    }).ToList()
                 })
             };
 
@@ -89,5 +119,6 @@ namespace Task4_2
                 Console.WriteLine($"Ошибка при записи файла: {ex.Message}");
             }
         }
+
     }
 }

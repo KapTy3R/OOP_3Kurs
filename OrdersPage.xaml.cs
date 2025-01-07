@@ -29,6 +29,12 @@ namespace Task4_2
         public OrdersPage(List<Orders> orders, MainWindow mainWindow) : this()
         {
             listView.ItemsSource = orders;
+            int sum = 0;
+            foreach (Orders o in orders) {
+                foreach (var zz in o.items) {
+                    sum+=zz.Quantity;
+                }
+            }
             _mainWindow = mainWindow;
         }
 
