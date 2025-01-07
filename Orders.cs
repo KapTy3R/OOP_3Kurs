@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task1
+namespace Task4_2
 {
-    internal class Orders: General
+    public class Orders: General
     {
         public Buyers buyer { get; }
         public Items item { get; }

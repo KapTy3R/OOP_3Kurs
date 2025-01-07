@@ -16,18 +16,19 @@ using System.Windows.Shapes;
 namespace Task4_2
 {
     /// <summary>
-    /// Логика взаимодействия для BuyersPage.xaml
+    /// Логика взаимодействия для OrderInfo.xaml
     /// </summary>
-    public partial class BuyersPage : Page
+    public partial class OrderInfo : Page
     {
-        public BuyersPage()
+        public OrderInfo()
         {
             InitializeComponent();
         }
 
-        public BuyersPage(List<Buyers> buyers) : this()
-        {
-            listView.ItemsSource = buyers;
+        public OrderInfo(Orders orders) : this() {
+            buyer.Text = $"{orders.buyer}";
+            total_value.Text = $"{orders.total_value}";
+            date.Text = $"{orders.date}";
         }
     }
 }

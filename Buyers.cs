@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task1
+namespace Task4_2
 {
-    internal class Buyers: General
+    public class Buyers: General
     {
         
         public string address { get; }
@@ -18,5 +18,9 @@ namespace Task1
             this.id = id; this.name = name; this.address = address; this.tel = tel; this.person = person;
         }
 
+        public override string ToString()
+        {
+            return $"{id}: {name}";
+        }
     }
 }

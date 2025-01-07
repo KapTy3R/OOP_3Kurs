@@ -5,13 +5,13 @@ using System.Linq;
 using System.Windows.Documents;
 using Newtonsoft.Json;
 
-namespace Task1
+namespace Task4_2
 {
     internal class JsonData : Data
     {
         private string filePath;
 
-        public JsonData() : base()
+        public JsonData(string selectedFiles) : base(selectedFiles)
         {
             this.filePath = base.filePath;
         }

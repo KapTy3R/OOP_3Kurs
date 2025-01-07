@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace Task1
+namespace Task4_2
 {
     internal class Lists
     {

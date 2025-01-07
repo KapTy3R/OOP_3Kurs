@@ -4,7 +4,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.IO;
 
-namespace Task1
+namespace Task4_2
 {
     internal class XmlData : Data
     {
@@ -12,7 +12,7 @@ namespace Task1
         XDocument xmlDoc = new XDocument();
         string filePath;
 
-        public XmlData() : base()
+        public XmlData(string selectedFiles) : base(selectedFiles)
         {
             this.filePath = base.filePath;
         }

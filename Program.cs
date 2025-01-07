@@ -6,12 +6,13 @@ using Microsoft.VisualBasic;
 using System.Globalization;
 using Microsoft.Win32;
 using System.Collections.Generic;
-
+using Task4_2;
+/*
 namespace Task1
 {
     class Program {
 
-        public static void Main(string[] args)
+        public static void SecMain(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
             Console.InputEncoding = Encoding.UTF8;
@@ -85,3 +86,4 @@ L2:                     Console.WriteLine("\nВ какой тип файлов �
     }
 }
 }
+*/

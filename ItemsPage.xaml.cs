@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Task4
+namespace Task4_2
 {
     /// <summary>
     /// Логика взаимодействия для ItemsPage.xaml
@@ -23,6 +23,11 @@ namespace Task4
         public ItemsPage()
         {
             InitializeComponent();
+        }
+
+        public ItemsPage(List<Items> items):this()
+        {
+            listView.ItemsSource = items;
         }
     }
 }

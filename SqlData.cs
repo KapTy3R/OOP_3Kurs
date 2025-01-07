@@ -4,16 +4,16 @@ using System.Collections.Generic;
 using SQLitePCL;
 using System.IO;
 
-namespace Task1
+namespace Task4_2
 {
     internal class SqlData : Data
     {
         private string connectionString;
 
-        public SqlData():base()
+        public SqlData(string selectedFiles) :base(selectedFiles)
         {
             connectionString = $"Data Source={base.filePath};";
-            Batteries.Init();
+            //Batteries.Init();
         }
 
         public override void Read(ref List<Buyers> buyers, ref List<Items> items, ref List<Orders> orders)

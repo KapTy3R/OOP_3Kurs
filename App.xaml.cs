@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Task4
+namespace Task4_2
 {
     /// <summary>
     /// Логика взаимодействия для App.xaml

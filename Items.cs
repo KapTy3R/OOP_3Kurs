@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task1
+namespace Task4_2
 {
-    internal class Items: General
+    public class Items: General
     {
         public int value { get;}
         public string description { get;}
@@ -15,6 +15,11 @@ namespace Task1
         public Items(int id, string name, int value, string description, bool check) : base (id, name)
         {
             this.id = id; this.name = name; this.value = value; this.description = description; this.check = check;
+        }
+
+        public override string ToString()
+        {
+            return $"{id}: {name}";
         }
     }
 }

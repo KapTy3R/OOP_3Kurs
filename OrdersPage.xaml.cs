@@ -13,16 +13,32 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Task4
+namespace Task4_2
 {
     /// <summary>
     /// Логика взаимодействия для OrdersPage.xaml
     /// </summary>
     public partial class OrdersPage : Page
     {
+        private MainWindow _mainWindow;
         public OrdersPage()
         {
             InitializeComponent();
+        }
+
+        public OrdersPage(List<Orders> orders, MainWindow mainWindow) : this()
+        {
+            listView.ItemsSource = orders;
+            _mainWindow = mainWindow;
+        }
+
+        private void listView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (listView.SelectedItem is Orders selectedItem)
+            {
+                OrderInfo orderInfo = new OrderInfo(selectedItem);
+                _mainWindow.ChangeSecondPage(orderInfo);
+            }
         }
     }
 }
