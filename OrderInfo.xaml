@@ -4,26 +4,50 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Task4_2"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       mc:Ignorable="d" 
       Title="OrderInfo">
 
     <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Stretch">
+            <Button Content="Сохранить" Padding="5" Margin="5" Click="Save" Name="SaveButton"/>
+            <Button Content="Удалить" Padding="5" Margin="5" Click="Delete" Name="DelOrCancelButton"/>
+            <Button Content="Добавить" Padding="5" Margin="5,5,5,5" HorizontalAlignment="Stretch" Click="Add" Name="AddButton"/>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Stretch">
             <Label Content="Покупатель" Padding="5"/>
-            <TextBox Name="buyer" MinWidth="100" HorizontalAlignment="Stretch"/>
+            <ComboBox VerticalContentAlignment="Center" MinWidth="150" Name="buyerComboBox" HorizontalAlignment="Stretch"/>
         </StackPanel>
-        <StackPanel Orientation="Vertical">
+        <StackPanel Margin="5"  Orientation="Vertical">
             <Label Content="Товары" Padding="5"/>
-            <ListView Name="items" MinWidth="100" MinHeight="50" HorizontalAlignment="Stretch"/>
-
+            <xctk:CheckComboBox Name="items"
+                             MinWidth="100"
+                             MinHeight="50"
+                             HorizontalAlignment="Stretch">
+                <xctk:CheckComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding id}" Margin="0,0,5,0"/>
+                            <TextBlock Text="{Binding name}" Margin="0,0,5,0"/>
+                            <TextBox MinWidth="20"
+         Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"
+         TextChanged="QuantityTextBox_TextChanged"
+         Tag="{Binding id}"
+         Margin="0,0,5,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </xctk:CheckComboBox.ItemTemplate>
+            </xctk:CheckComboBox>
         </StackPanel>
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Margin="5"  Orientation="Horizontal">
             <Label Content="Общая стоимость" Padding="5"/>
-            <TextBlock MinWidth="100" Name="total_value" HorizontalAlignment="Stretch"/>
+            <ContentControl VerticalAlignment="Stretch">
+                <TextBlock VerticalAlignment="Center" MinWidth="100" Name="total_value" HorizontalAlignment="Stretch"/>
+            </ContentControl>
         </StackPanel>
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Margin="5"  Orientation="Horizontal">
             <Label Content="Дата заказа" Padding="5"/>
-            <DatePicker MinWidth="150" Name="date" HorizontalAlignment="Stretch"/>
+            <xctk:DateTimePicker VerticalContentAlignment="Center" MinWidth="150" x:Name="date"/>
         </StackPanel>
     </StackPanel>
 </Page>

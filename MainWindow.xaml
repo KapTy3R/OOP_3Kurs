@@ -14,7 +14,7 @@
             </MenuItem>
             <MenuItem Header="Выйти" Click="Quit"/>
         </Menu>
-        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="TabControl_SelectionChanged" Name="TabControl">
+        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="TabControl_SelectionChanged" Name="TabControl_Main">
         <TabItem Header="Заказы" Name="OrdersButton">
             <Grid>
                 <Grid.RowDefinitions>

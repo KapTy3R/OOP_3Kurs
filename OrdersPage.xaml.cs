@@ -29,12 +29,6 @@ namespace Task4_2
         public OrdersPage(List<Orders> orders, MainWindow mainWindow) : this()
         {
             listView.ItemsSource = orders;
-            int sum = 0;
-            foreach (Orders o in orders) {
-                foreach (var zz in o.items) {
-                    sum+=zz.Quantity;
-                }
-            }
             _mainWindow = mainWindow;
         }
 
@@ -42,7 +36,7 @@ namespace Task4_2
         {
             if (listView.SelectedItem is Orders selectedItem)
             {
-                OrderInfo orderInfo = new OrderInfo(selectedItem);
+                OrderInfo orderInfo = new OrderInfo(selectedItem, _mainWindow);
                 _mainWindow.ChangeSecondPage(orderInfo);
             }
         }

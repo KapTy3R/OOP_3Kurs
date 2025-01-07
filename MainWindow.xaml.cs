@@ -22,9 +22,9 @@ namespace Task4_2
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<Buyers> All_buyers = new List<Buyers>();
-        List<Items> All_items = new List<Items>();
-        List<Orders> All_orders = new List<Orders>();
+        public List<Buyers> All_buyers = new List<Buyers>();
+        public List<Items> All_items = new List<Items>();
+        public List<Orders> All_orders = new List<Orders>();
         string temp;
         public MainWindow()
         {
@@ -32,8 +32,7 @@ namespace Task4_2
             OrdersFrame.Content = new OrdersPage();
             BuyersFrame.Content = new BuyersPage();
             ItemsFrame.Content = new ItemsPage();
-            OrdersInfoFrame.Content = new OrderInfo();
-
+            OrdersInfoFrame.Navigate(new OrderInfo(this)); 
         }
 
         private int OpenDialog(ref string selectedFiles) {
@@ -65,7 +64,7 @@ namespace Task4_2
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateInfo();
+            UpdatePage();
         }
 
         public void ChangeSecondPage(OrderInfo orderInfo) {
@@ -73,9 +72,20 @@ namespace Task4_2
             OrdersInfoFrame.Navigate(orderInfo);
         }
 
-        private void UpdateInfo() {
-            switch (TabControl.SelectedIndex) {
-                case 0: OrdersFrame.Navigate(new OrdersPage(All_orders, this)); break;
+        public void UpdateInfo()
+        {
+            switch (TabControl_Main.SelectedIndex)
+            {
+                case 0: OrdersInfoFrame.Navigate(new OrderInfo(this)); break;
+                case 1: BuyersFrame.Navigate(new BuyersPage(All_buyers)); break;
+                case 2: ItemsFrame.Navigate(new ItemsPage(All_items)); break;
+            }
+        }
+
+
+        public void UpdatePage() {
+            switch (TabControl_Main.SelectedIndex) {
+                case 0: OrdersFrame.Navigate(new OrdersPage(All_orders, this));break;
                 case 1: BuyersFrame.Navigate(new BuyersPage(All_buyers)); break;
                 case 2: ItemsFrame.Navigate(new ItemsPage(All_items)); break;
             }
@@ -114,7 +124,9 @@ namespace Task4_2
                     case 2: try { SqlData sqlData = new SqlData(selectedFiles); sqlData.Read(ref All_buyers, ref All_items, ref All_orders); } catch (ArgumentException ex) { MessageBox.Show(ex.Message, "Внимание", MessageBoxButton.OK, MessageBoxImage.Error); }; break;
                     case 3: try { JsonData JsonData = new JsonData(selectedFiles); JsonData.Read(ref All_buyers, ref All_items, ref All_orders); } catch (ArgumentException ex) { MessageBox.Show(ex.Message, "Внимание", MessageBoxButton.OK, MessageBoxImage.Error); }; break;
                 }
+                UpdatePage();
                 UpdateInfo();
+
             }
         }
     }
