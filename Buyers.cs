@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Task1
 {
-    internal class Buyers: General
+    public class Buyers: General
     {
         
         public string address { get; }
@@ -18,5 +18,9 @@ namespace Task1
             this.id = id; this.name = name; this.address = address; this.tel = tel; this.person = person;
         }
 
+        public override string ToString()
+        {
+            return $"{id}: {name}";
+        }
     }
 }

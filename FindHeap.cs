@@ -13,7 +13,7 @@ namespace Task1
         {
             if (array == null || array.Count == 0)
             {
-                throw new ArgumentException("Массив не может быть пустым.");
+                throw new ArgumentException("Нет доступных покупателей.");
             }
 
             // Используем PriorityQueue для минимальной кучи
@@ -41,7 +41,7 @@ namespace Task1
         {
             if (array == null || array.Count == 0)
             {
-                throw new ArgumentException("Массив не может быть пустым.");
+                throw new ArgumentException("Нет доступных продуктов.");
             }
 
             // Используем PriorityQueue для минимальной кучи
@@ -69,7 +69,7 @@ namespace Task1
         {
             if (array == null || array.Count == 0)
             {
-                throw new ArgumentException("Массив не может быть пустым.");
+                throw new ArgumentException("Нет доступных заказов.");
             }
 
             // Используем PriorityQueue для минимальной кучи
