@@ -20,6 +20,8 @@ namespace Task1
                 throw new ArgumentException("Путь к файлу не может быть пустым.");
         }
 
+
+
         public abstract void Read(ref List<Buyers> buyers, ref List<Items> items, ref List<Orders> orders);
         public abstract void Write(List<Buyers> buyers, List<Items> items, List<Orders> orders);
     }
