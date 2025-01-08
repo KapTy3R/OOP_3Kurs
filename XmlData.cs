@@ -6,7 +6,7 @@ using System.IO;
 using System.Windows;
 using Task1;
 
-namespace Task4_2
+namespace Task1
 {
     internal class XmlData : Data
     {

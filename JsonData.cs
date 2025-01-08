@@ -111,7 +111,7 @@ namespace Task1
 
             try
             {
-                string json = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
+                string json = JsonConvert.SerializeObject(jsonData, Newtonsoft.Json.Formatting.Indented);
                 File.WriteAllText(filePath, json);
                 Console.WriteLine("Данные успешно записаны в JSON-файл.");
             }
