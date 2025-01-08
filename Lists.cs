@@ -10,9 +10,11 @@ namespace Task1
     internal class Lists
     {
 
-        public static void CheckId<T>(List<T> list, int id) where T : General {
-            foreach (var item in list) {
-            if (item.id==id) throw new ArgumentException("Объект с таким ID уже есть");
+        public static void CheckId<T>(List<T> list, int id) where T : General
+        {
+            foreach (var item in list)
+            {
+                if (item.id == id) throw new ArgumentException("Объект с таким ID уже есть");
             }
         }
 
@@ -89,8 +91,12 @@ namespace Task1
             foreach (var num in orders)
                 try
                 {
-                    if (num != null && num.buyer != null && num.item != null)
-                        tempStr += $"\n{num.id}. {num.buyer.id} - {num.item.id}x{num.item_quantity} - {num.item.check} ({num.date});";
+                    if (num != null && num.buyer != null)
+                    {
+                        string str = "";
+                        foreach (var items in num.items) { str += $"{items.Item}x{items.Quantity}; "; };
+                        tempStr += $"\n{num.id}. {num.buyer.id} - {str} | Общее кол-во:{num.items_quantity} Общая цена:{num.total_value} ({num.date});";
+                    }
                     else return tempStr = $"Что-то пошло не так";
                 }
                 catch { return tempStr = "Что-то пошло не так"; }
@@ -125,23 +131,39 @@ namespace Task1
             }
         }
 
-        public static Orders Enter(string temp, DateTime date, List<Buyers> All_buyers, List<Items> All_items, List<Orders> orders)
+        public static Orders Enter(string temp, string items, DateTime date, List<Buyers> All_buyers, List<Items> All_items, List<Orders> orders)
         {
+            List<(Items Item, int Quantity)> all_its = [];
             string[] str = temp.Split(',');
-            if (str.Length != 4) throw new ArgumentException("Неправильный набор данных");
+            string[] its = items.Split(',');
+            if (str.Length != 2) throw new ArgumentException("Неправильный набор данных");
             else
             {
                 for (int i = 0; i < str.Length; i++)
                     str[i] = RemoveLeadingSpace(str[i]);
+                for (int i = 0; i < its.Length; i++)
+                    its[i] = RemoveLeadingSpace(its[i]);
                 Buyers buyer = FindHeap.FindElementUsingHeap(All_buyers, Convert.ToInt32(str[1]));
-                Items item = FindHeap.FindElementUsingHeap(All_items, Convert.ToInt32(str[2]));
-                if (buyer == null || item == null)
+
+
+                foreach (var i in its)
+                {
+                    var temp_i = i.Split("- ");
+                    try
+                    {
+                        all_its.Add((FindHeap.FindElementUsingHeap(All_items, Convert.ToInt32(RemoveLeadingSpace(temp_i[0]))), Convert.ToInt32(RemoveLeadingSpace((temp_i[1])))));
+                    }
+                    catch { throw new ArgumentException("Не удалось обнаружить продукт\n"); }
+                }
+
+                //Items item = FindHeap.FindElementUsingHeap(All_items, Convert.ToInt32(str[2]));
+                if (buyer == null || all_its == null)
                 {
                     if (buyer == null) throw new ArgumentException("Покупатель не найден\n");
-                    if (item == null) throw new ArgumentException("Продукт не найден\n");
+                    if (all_its == null) throw new ArgumentException("Продукт не найден\n");
                 }
                 CheckId(orders, Convert.ToInt32(str[0]));
-                Orders order = new Orders(Convert.ToInt32(str[0]), buyer, item, Convert.ToInt32(str[3]), Convert.ToDateTime(date));
+                Orders order = new Orders(Convert.ToInt32(str[0]), buyer, all_its, Convert.ToDateTime(date));
                 return order;
             }
         }

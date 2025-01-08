@@ -71,11 +71,10 @@ namespace Task1
                     case "D8": Console.WriteLine("\nВведите id продукта, который нужно удалить:"); temp = Console.ReadLine(); try { if (string.IsNullOrEmpty(temp)) throw new ArgumentException("Неправильный набор данных"); int tempint = Convert.ToInt32(temp); Lists.Del(ref All_items, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
                     case "D9": Console.WriteLine("\nВведите id заказа, который нужно удалить:"); temp = Console.ReadLine(); try { if (string.IsNullOrEmpty(temp)) throw new ArgumentException("Неправильный набор данных"); int tempint = Convert.ToInt32(temp); Lists.Del(ref All_orders, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
                     case "D0":
-                    L1: Console.WriteLine("\nВ какой тип файлов загрузить данные?\n1 - SQL; 2 - XML; 3 - JSON; + - Отмена");
+                    L1: Console.WriteLine("\nВ какой тип файлов загрузить данные?\n2 - XML; 3 - JSON; + - Отмена");
                         keyInfo = Console.ReadKey();
                         switch (keyInfo.Key)
                         {
-                            case ConsoleKey.D1: try { SqlData sqlData = new SqlData(); sqlData.Read(ref All_buyers, ref All_items, ref All_orders); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
                             case ConsoleKey.D2: try { XmlData xmlData = new XmlData(); xmlData.Read(ref All_buyers, ref All_items, ref All_orders); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
                             case ConsoleKey.D3: try { JsonData JsonData = new JsonData(); JsonData.Read(ref All_buyers, ref All_items, ref All_orders); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
                             case ConsoleKey.OemPlus: break;
