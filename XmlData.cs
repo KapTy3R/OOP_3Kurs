@@ -26,7 +26,7 @@ namespace Task1
             this.filePath = file.FullName;
             this.xmlDoc = XDocument.Load(filePath);
         }
-
+        
         public override void Read(ref List<Buyers> buyers, ref List<Items> items, ref List<Orders> orders)
         {
             ValidateAndLoadFile(filePath);
