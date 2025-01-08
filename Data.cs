@@ -16,6 +16,8 @@ namespace Task1
         {
             Console.WriteLine("\nВведите полный путь к файлу:");
             this.filePath = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(this.filePath))
+                throw new ArgumentException("Путь к файлу не может быть пустым.");
         }
 
 
