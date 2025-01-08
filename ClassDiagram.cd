@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Task1.Buyers">
+    <Position X="3" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAIAAAAAAAAIAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Buyers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Task1.Data">
+    <Position X="3" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAGAAAAAAAAEAAAA=</HashCode>
+      <FileName>Data.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Task1.FindHeap">
+    <Position X="7.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FindHeap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Task1.General">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>General.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Task1.Items">
+    <Position X="5.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAEIAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Items.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Task1.JsonData">
+    <Position X="1" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAEAAAAAAAAEAAAA=</HashCode>
+      <FileName>JsonData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Task1.Lists">
+    <Position X="9.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAgAEEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Lists.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Task1.Orders">
+    <Position X="0.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAABAAAAgAAAAAAAAAABAAAAAAAQAAAAA=</HashCode>
+      <FileName>Orders.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Task1.Program">
+    <Position X="7.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Task1.XmlData">
+    <Position X="5.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEgAAAAAAAAAAAAAAAAAgAAAAAGAAAAAAAAEAAAA=</HashCode>
+      <FileName>XmlData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
