@@ -37,7 +37,7 @@ namespace Task1
                         if (keyInfo.Key == ConsoleKey.Y) have = true;
                         else if (keyInfo.Key == ConsoleKey.N) have = false;
                         else goto R;
-                        try { var add = Lists.Enter(temp, have, All_items); All_items.Add(add); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
+                        try { if (string.IsNullOrEmpty(temp)) throw new ArgumentException("Неправильный набор данных"); var add = Lists.Enter(temp, have, All_items); All_items.Add(add); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
                     case "D3":
                         Console.WriteLine("\nВведите информацию по заказу через запятую, в следующем формате: id сделки, id клиента"); temp = Console.ReadLine(); string dateFormat = "yyyy.MM.dd HH:mm:ss"; // Формат даты
                         DateTime parsedDate;
@@ -56,19 +56,19 @@ namespace Task1
                             Console.WriteLine($"\nВведите продукты через запятую, в следующем формате: id продукта - количество");
     
                             string products = Console.ReadLine();
-                            if (products.Count(c=>c=='-')==0)
+                            if (string.IsNullOrEmpty(products) && products.Count(c=>c=='-')==0)
                             {
                                 Console.WriteLine("\nНеверный формат. Попробуйте снова.\n");
                             }
-                            else try { var add = Lists.Enter(temp, products, parsedDate, All_buyers, All_items, All_orders); All_orders.Add(add); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
+                            else try { if (string.IsNullOrEmpty(temp)) throw new ArgumentException("Неправильный набор данных"); var add = Lists.Enter(temp, products, parsedDate, All_buyers, All_items, All_orders); All_orders.Add(add); } catch (ArgumentException ex) { Console.WriteLine($"{ex.Message}"); }; break;
                         }
                         break;
                     case "D4": Console.WriteLine(Lists.Outs(All_buyers)); break;
                 case "D5": Console.WriteLine(Lists.Outs(All_items)); break;
                 case "D6": Console.WriteLine(Lists.Outs(All_orders)); break;
-                case "D7": Console.WriteLine("\nВведите id покупателя, который нужно удалить:"); temp = Console.ReadLine(); try { int tempint = Convert.ToInt32(temp); Lists.Del(ref All_buyers, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
-                case "D8": Console.WriteLine("\nВведите id продукта, который нужно удалить:"); temp = Console.ReadLine(); try { int tempint = Convert.ToInt32(temp); Lists.Del(ref All_items, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
-                case "D9": Console.WriteLine("\nВведите id заказа, который нужно удалить:"); temp = Console.ReadLine(); try { int tempint = Convert.ToInt32(temp); Lists.Del(ref All_orders, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
+                case "D7": Console.WriteLine("\nВведите id покупателя, который нужно удалить:"); temp = Console.ReadLine(); try { if (string.IsNullOrEmpty(temp)) throw new ArgumentException("Неправильный набор данных"); int tempint = Convert.ToInt32(temp); Lists.Del(ref All_buyers, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
+                case "D8": Console.WriteLine("\nВведите id продукта, который нужно удалить:"); temp = Console.ReadLine(); try { if (string.IsNullOrEmpty(temp)) throw new ArgumentException("Неправильный набор данных"); int tempint = Convert.ToInt32(temp); Lists.Del(ref All_items, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
+                case "D9": Console.WriteLine("\nВведите id заказа, который нужно удалить:"); temp = Console.ReadLine(); try {if (string.IsNullOrEmpty(temp)) throw new ArgumentException("Неправильный набор данных"); int tempint = Convert.ToInt32(temp); Lists.Del(ref All_orders, tempint); } catch (ArgumentException) { Console.WriteLine("\nЧто-то пошло не так\n"); }; break;
                 case "OemPlus": Environment.Exit(0); break;
                 default: Console.WriteLine($"\nНеправильный выбор\n"); break;
                 };
