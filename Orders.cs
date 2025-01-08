@@ -9,7 +9,6 @@ namespace Task4_2
     public class Orders: General
     {
         public Buyers buyer { get; }
-        public Items item { get; }
         public List<(Items Item, int Quantity)> items { get; set; }
         public int items_quantity { get; }
         public int total_value { get; set; }

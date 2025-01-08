@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -24,12 +25,48 @@ namespace Task4_2
     /// <summary>
     /// Логика взаимодействия для OrderInfo.xaml
     /// </summary>
+    /// 
+    public class ItemsQuant : General
+    {
+        public int value { get; }
+        public string description { get; }
+        public bool check { get; }
+        private int _quantity;
+        public int quantity
+        {
+            get => _quantity;
+            set
+            {
+                if (_quantity != value)
+                {
+                    _quantity = value;
+                    OnPropertyChanged(nameof(quantity));
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        public ItemsQuant(int id, string name, int value, string description, bool check, int quantity) : base(id, name)
+        {
+            this.id = id; this.name = name; this.value = value; this.description = description; this.check = check; this.quantity = quantity;
+        }
+
+        public override string ToString()
+        {
+            return $"{id}: {name} x {quantity}";
+        }
+    }
+
+
     public partial class OrderInfo : Page
     {
         private MainWindow _mainWindow;
         Orders Order { get; set; }
-        private Dictionary<int, int> itemQuantities = new Dictionary<int, int>();
-        public ObservableCollection<Items> ItemsCollection { get; set; }
         public OrderInfo(MainWindow mainWindow)
         {
             InitializeComponent();
@@ -37,33 +74,70 @@ namespace Task4_2
             SaveButton.IsEnabled = false;
             DelOrCancelButton.IsEnabled = false;
             buyerComboBox.ItemsSource = mainWindow.All_buyers;
-            ItemsCollection = new ObservableCollection<Items>(mainWindow.All_items);
-            items.ItemsSource = ItemsCollection;
+            items.ItemsSource = GetItemsQuants(mainWindow.All_items);
             DelOrCancelButton.IsEnabled = true;
             SaveButton.IsEnabled = true;
         }
 
 
+        private List<ItemsQuant> GetItemsQuants(List<Items> items) {
+            List<ItemsQuant> itemsQuants = new List<ItemsQuant>();
+            foreach (var item in items)
+            {
+                ItemsQuant temp = new ItemsQuant(item.id, item.name, item.value, item.description, item.check, 0);
+                itemsQuants.Add(temp);
+            }
+            return itemsQuants;
+        }
+
+        private List<ItemsQuant> GetItemsQuants(List<Items> items, Orders orders)
+        {
+            List<ItemsQuant> itemsQuants = new List<ItemsQuant>();
+            List<(Items Item, int Quantity)> its = orders.items;
+            foreach (var item in items)
+            {
+                ItemsQuant temp;
+                int t=its.FindIndex(o => o.Item.id == item.id);
+                if (t != -1)
+                temp = new ItemsQuant(item.id, item.name, item.value, item.description, item.check, its[t].Quantity);
+                else temp = new ItemsQuant(item.id, item.name, item.value, item.description, item.check, 0);
+                itemsQuants.Add(temp);
+            }
+            return itemsQuants;
+        }
+
+        /*
+        private List<ItemsQuant> GetItemsQuants(List<ItemsQuant> itemsQuants, Orders orders)
+        {
+            List<ItemsQuant> itemsQuants2 = new List<ItemsQuant>();
+            List<(Items Item, int Quantity)> its = orders.items;
+            foreach (var item in itemsQuants)
+            {
+                ItemsQuant temp;
+                int t = its.FindIndex(o => o.Item.id == item.id);
+                if (t != -1) { 
+                temp = new ItemsQuant(item.id, item.name, item.value, item.description, item.check, its[t].Quantity);
+                itemsQuants2.Add(temp);
+                }
+            }
+            return itemsQuants2;
+        }
+        */
 
         public OrderInfo(Orders order, MainWindow mainWindow) : this(mainWindow)
         {
             buyerComboBox.SelectedValue = order.buyer;
             total_value.Text = $"{order.total_value}";
             date.Text = $"{order.date:dd.MM.yyyy HH:mm:ss}";
-
-            // Устанавливаем ItemsSource и выделяем выбранные элементы
-            ItemsCollection = new ObservableCollection<Items>(mainWindow.All_items);
-            items.ItemsSource = ItemsCollection;
-            foreach (var selectedItem in order.items)
+            var allItems= GetItemsQuants(mainWindow.All_items, order);
+            items.ItemsSource = allItems;
+            var selectedItems = order.items;
+            //items.SelectedItems.Clear();
+            foreach (var item in selectedItems)
             {
-                var matchingItem = mainWindow.All_items.FirstOrDefault(i => i.id == selectedItem.Item.id);
-                if (matchingItem != null)
-                {
-                    items.SelectedItems.Add(matchingItem);
-                }
-                itemQuantities[selectedItem.Item.id] = selectedItem.Quantity;
+                var t = allItems.Find(o => o.id == item.Item.id);
+                items.SelectedItems.Add(t);
             }
-
             this.Order = order;
         }
 
@@ -140,76 +214,87 @@ namespace Task4_2
             }
 
             // Получаем выбранные элементы с количеством
-            var selectedItemsWithQuantities = GetSelectedItemsWithQuantities();
-
-            if (selectedItemsWithQuantities.Count == 0)
+            var selectedItems = items.SelectedItems.Cast<ItemsQuant>().ToList();
+            if (selectedItems.Count == 0)
             {
                 Xceed.Wpf.Toolkit.MessageBox.Show("Выберите хотя бы один товар.");
                 return;
             }
 
-            // Обновляем заказ
-            List<(Items Item, int Quantity)> updatedItems = selectedItemsWithQuantities
-                .Select(i => (Item: _mainWindow.All_items.First(item => item.id == i.Id), Quantity: i.Quantity))
+            // Обновляем список товаров с количеством
+            var updatedItems = selectedItems
+                .Where(item => item.quantity > 0)
+                .Select(item => (new Items(item.id, item.name, item.value, item.description, item.check), item.quantity))
                 .ToList();
 
-            // Обновляем данные заказа в списке
+            if (updatedItems.Count == 0)
+            {
+                Xceed.Wpf.Toolkit.MessageBox.Show("Указано количество 0 для всех товаров. Укажите корректное количество.");
+                return;
+            }
+
+            // Создаем новый объект заказа с обновленными данными
+            Orders updatedOrder = new Orders(
+                Order.id,
+                selectedBuyer,
+                updatedItems,
+                newDate
+            );
+
+            // Заменяем старый заказ в списке
             int index = _mainWindow.All_orders.FindIndex(o => o.id == Order.id);
             if (index >= 0)
             {
-                _mainWindow.All_orders[index] = new Orders(Order.id, selectedBuyer, updatedItems, newDate);
+                _mainWindow.All_orders[index] = updatedOrder;
                 Xceed.Wpf.Toolkit.MessageBox.Show("Заказ успешно сохранен.");
+            }
+            else
+            {
+                Xceed.Wpf.Toolkit.MessageBox.Show("Ошибка: заказ не найден.");
+                return;
             }
 
             // Обновляем страницу
             _mainWindow.UpdatePage();
             _mainWindow.OrdersInfoFrame.Content = new OrderInfo(_mainWindow);
 
-            // Очищаем текущий заказ
-            this.Order = null;
+            // Сбрасываем текущий заказ
             SaveButton.IsEnabled = false;
+            this.Order = null;
         }
 
 
-        private List<string> ReadQuantities()
-        {
-            List<string> str=[];
-            var selectedItems = items.SelectedItems;
 
-            foreach (var selectedItem in selectedItems)
-            {
-                var id = (int)selectedItem.GetType().GetProperty("id").GetValue(selectedItem);
-                var name = (string)selectedItem.GetType().GetProperty("name").GetValue(selectedItem);
 
-                if (itemQuantities.TryGetValue(id, out int quantity))
-                {
-                    str.Add($"{id},{name},{quantity}");
-                }
-                else
-                {
-                    str.Add($"{id},{name}");
-                }
-            }
-            return str;
-        }
+
 
         private void QuantityTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (sender is TextBox textBox && textBox.Tag is int id)
             {
+                // Проверяем, что введенное значение является числом и больше или равно 0
                 if (int.TryParse(textBox.Text, out int quantity) && quantity >= 0)
                 {
-                    itemQuantities[id] = quantity;
+                    // Проходим по всем элементам, чтобы найти нужный
+                    foreach (var item in items.ItemsSource)
+                    {
+                        if (item is ItemsQuant quant && quant.id == id)
+                        {
+                            quant.quantity = quantity;
+                            break;
+                        }
+                    }
                 }
                 else
                 {
-                    itemQuantities.Remove(id);
-                    textBox.Text = "0"; // Установить 0, если значение невалидное
+                    // Если значение некорректное, сбрасываем его в 0
+                    textBox.Text = "0";
                 }
             }
         }
 
 
+        /*
         private List<(int Id, int Quantity)> GetSelectedItemsWithQuantities()
         {
             var selectedItems = items.SelectedItems;
@@ -230,7 +315,7 @@ namespace Task4_2
 
             return result;
         }
-
+        */
 
 
         private void Delete(object sender, RoutedEventArgs e)
@@ -262,20 +347,27 @@ namespace Task4_2
             }
 
             // Получаем выбранные элементы с количеством
-            var selectedItemsWithQuantities = GetSelectedItemsWithQuantities();
-
-            if (selectedItemsWithQuantities.Count == 0)
+            var selectedItems = items.SelectedItems.Cast<ItemsQuant>().ToList();
+            if (selectedItems.Count == 0)
             {
                 Xceed.Wpf.Toolkit.MessageBox.Show("Выберите хотя бы один товар.");
                 return;
             }
 
-            // Создаем новый заказ
-            int newOrderId = _mainWindow.All_orders.Max(o => o.id) + 1;
-            List<(Items Item, int Quantity)> newItems = selectedItemsWithQuantities
-                .Select(i => (Item: _mainWindow.All_items.First(item => item.id == i.Id), Quantity: i.Quantity))
+            // Создаем список товаров с количеством
+            var newItems = selectedItems
+                .Where(item => item.quantity > 0)
+                .Select(item => (new Items(item.id, item.name, item.value, item.description, item.check), item.quantity))
                 .ToList();
 
+            if (newItems.Count == 0)
+            {
+                Xceed.Wpf.Toolkit.MessageBox.Show("Указано количество 0 для всех товаров. Укажите корректное количество.");
+                return;
+            }
+
+            // Создаем новый заказ
+            int newOrderId = _mainWindow.All_orders.Any() ? _mainWindow.All_orders.Max(o => o.id) + 1 : 1;
             Orders newOrder = new Orders(newOrderId, selectedBuyer, newItems, newDate);
             _mainWindow.All_orders.Add(newOrder);
 
@@ -285,10 +377,11 @@ namespace Task4_2
             _mainWindow.OrdersInfoFrame.Content = new OrderInfo(_mainWindow);
             _mainWindow.UpdatePage();
 
-            // Очищаем текущий заказ
+            // Сбрасываем текущий заказ
             SaveButton.IsEnabled = false;
             this.Order = null;
         }
+
 
 
     }

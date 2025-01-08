@@ -91,8 +91,8 @@ namespace Task4_2
             foreach (var num in orders)
                 try
                 {
-                    if (num != null && num.buyer != null && num.item != null)
-                        tempStr += $"\n{num.id}. {num.buyer.id} - {num.total_value} - {num.item.check} ({num.date});";
+                    if (num != null && num.buyer != null)
+                        tempStr += $"\n{num.id}. {num.buyer.id} - {num.total_value} - {num.items_quantity} ({num.date});";
                     else return tempStr = $"Что-то пошло не так";
                 }
                 catch { return tempStr = "Что-то пошло не так"; }
